@@ -2,32 +2,44 @@
 
 // Load the "fs" and "readline" modules
 import fs from 'fs';
-import readline from'readline';
-import {displayDumb} from './modules/logo.mjs';
-import {interpret} from './modules/interpreter.mjs';
+import readline from 'readline';
+import { displayDumb } from './modules/logo.mjs';
+import { interpret } from './modules/interpreter.mjs';
+import chalk from 'chalk';
+
+
+
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
 
 
 function interpretFile(filename) {
   // Read the contents of the file
   var program = fs.readFileSync(filename, 'utf8');
-  interpret(program,filename);
+  interpret(program, filename);
+  rl.close();
 }
 
 
 function interpretPrompt() {
+ 
+  rl.question(chalk.bold('dumb-- >'), function (input) {
+    // Interpret the input
+    if (input === 'exit') {
+      rl.close(); 
+      return;
+    }
 
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  
+    try {
+      interpret(input);
+    } catch (error) {
+      console.error(error)
+    }
 
-  rl.question('Enter a "dumb--" program: ', function(program) {
-    // Interpret the program
-    interpret(program);
-    
-
-    rl.close();
+    interpretPrompt()
   });
 }
 
