@@ -1,0 +1,8 @@
+// the first line of my language
+tm.dis("hello");
+// the second line of my language
+tm.dis("world
+how are you");
+// the third line of my language
+tm.dis("how are you doing buddy 
+ is everything alright");
